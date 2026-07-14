@@ -18,12 +18,14 @@ A personal project to detect suspicious network activity (e.g. port scanning) us
 - [ ] C/C++ engine
 
 ## 📂 Project Structure
+```
 NIDS_Project/
 ├── backend_python/
 │   ├── sniffer.py
 │   └── db_handler.py
 ├── web_dashboard/      (coming soon)
 └── backend_c_cpp/      (coming soon)
+```
 
 ## 🚀 How to Run
 ```bash
