@@ -9,7 +9,7 @@ def insert_alert(source_ip,destination_ip,attack_type,risk_level):
             password=os.getenv('DB_PASSWORD'),
             database="nids_db"
         )
-        print('CONNECTION REUSSIE A LA BASE DE DONNEES !')
+        print('DATABASE CONNECTED SUCCESSFULLY !')
        
         cursor=db_connection.cursor()
 
@@ -17,12 +17,12 @@ def insert_alert(source_ip,destination_ip,attack_type,risk_level):
         data=(source_ip,destination_ip,attack_type,risk_level)
         cursor.execute(sql_query,data)
         db_connection.commit()
-        print(f"DONNEES INSEREES AVEC SUCCES DANS LE TABLEAU 'alerts'!")
+        print(f"ALERT INSERTED INTO 'alerts'TABLE !")
     except mysql.connector.Error as er:
         print(f"ERREUR :{er}")
     finally:
         if'db_connection' in locals() and db_connection.is_connected():
             cursor.close()
             db_connection.close()
-            print("CONNEXION FERMEE !")
+            print("DATABASE CONNECTION CLOSED !")
         
