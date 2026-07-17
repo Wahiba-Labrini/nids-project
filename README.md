@@ -13,7 +13,7 @@ A personal project to detect suspicious network activity (e.g. port scanning) us
 - [x] Packet capture with Scapy
 - [x] Extract source and destination IPs
 - [x] Insert captured packet data into the alerts table via db_handler.py
-- [ ] Port scan detection
+- [x] Port scan detection
 - [ ] Web dashboard
 - [ ] C/C++ engine
 
