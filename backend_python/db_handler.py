@@ -35,7 +35,7 @@ def get_all_alerts():
             database="nids_db"
         )
         cursor=db_connection.cursor(dictionary=True)
-        cursor.execute("SELECT*FROM alerts ORDER BY detected_at DESC")
+        cursor.execute("SELECT*FROM alerts ORDER BY detected_at DESC,id DESC")
         res=cursor.fetchall()
         return res
     except mysql.connector.Error as err:

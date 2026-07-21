@@ -26,7 +26,12 @@
                 <td> {{ alert.source_ip }} </td>
                 <td> {{ alert.destination_ip }} </td>
                 <td> {{ alert.attack_type }} </td>
-                <td> {{ alert.risk_level }} </td>
+                <td class="{% if alert.risk_level== 'HIGH'%}risk-high
+                           {%elif alert.risk_level== 'CRITICAL'%}risk-critical
+                           {% else %} risk-normal 
+                           {% endif %}">
+                        {{ alert.risk_level }} 
+                </td>
                 <td> {{ alert.detected_at }} </td>
             </tr>
             {% endfor %}
