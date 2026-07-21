@@ -26,3 +26,23 @@ def insert_alert(source_ip,destination_ip,attack_type,risk_level):
             db_connection.close()
             print("DATABASE CONNECTION CLOSED !")
         
+def get_all_alerts():
+    try :
+        db_connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password=os.getenv('DB_PASSWORD'),
+            database="nids_db"
+        )
+        cursor=db_connection.cursor(dictionary=True)
+        cursor.execute("SELECT*FROM alerts ORDER BY detected_at DESC")
+        res=cursor.fetchall()
+        return res
+    except mysql.connector.Error as err:
+        print(f"ERREUR :{err}")
+        return[]
+    finally:
+        if'db_connection' in locals() and db_connection.is_connected():
+            cursor.close()
+            db_connection.close()
+
