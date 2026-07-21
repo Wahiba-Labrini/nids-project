@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIDS Dashboard </title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+</head>
+<body>
+    <h1>Security Alerts</h1>
+    <table>
+        <thead>
+            <tr>
+                <th> ID </th>
+                <th> IP Source </th>
+                <th> IP Destination </th>
+                <th> Attack Type </th>
+                <th> Risk Level </th>
+                <th> Timestamp </th>     
+            </tr>
+        </thead>
+        <tbody>
+            {% for alert in alerts %}
+            <tr>
+                <td> {{ alert.id }} </td>
+                <td> {{ alert.source_ip }} </td>
+                <td> {{ alert.destination_ip }} </td>
+                <td> {{ alert.attack_type }} </td>
+                <td> {{ alert.risk_level }} </td>
+                <td> {{ alert.detected_at }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>
