@@ -6,11 +6,21 @@ body{
 
 }
 h1{
-
     text-align: center;
-    color: rgb(33, 4, 137);
+    color: #349ce4;
+    margin-bottom: 25px;
+    font-size: 40 px;
+    margin-bottom: 5 px; 
+    text-decoration-line:underline ;
+}
+h2{
+    text-align: center;
+    color: #8f00ff;
     margin-bottom: 25px;
     font-size: 30 px;
+    margin-top: 0;
+    margin-bottom: 25 px;
+    text-decoration-line:underline ;
 }
 table{
     width: 100%;
@@ -21,15 +31,15 @@ table{
 
 }
 .risk-high{
-    color: rgb(151, 99, 3);
+    color: rgba(160, 79, 7, 0.975);
     font-weight: bold;
 }
 .risk-critical{
-    color: rgb(125, 3, 3);
+    color: rgba(176, 6, 6, 0.811);
     font-weight: bold;
 }
 .risk-noraml{
-     color: rgb(2, 109, 2);
+     color: rgba(21, 169, 7, 0.614);
 
 }
 th,td{
