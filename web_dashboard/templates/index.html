@@ -7,9 +7,23 @@
     <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
 </head>
 <body>
-    <script src="{{url_for('static',filename='js/jquery-4.0.0.min (1).js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery-4.0.0.min.js')}}"></script>
     <h1> Network Intrusion Detection System </h1>
-    <h2> Security Alerts </h2> 
+    <h2> Security Alerts </h2>
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>TOTAL ALERTS</h3>
+            <p class="stat-value">{{ stats.total_alerts }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>MOST COMMON ATTACK</h3>
+            <p class="stat-value">{{ stats.most_common_attack }}</p>
+        </div>
+        <div class="stat-card">
+           <h3>MOST ACTIVE DAY</h3>
+            <p class="stat-value">{{ stats.most_active_day }}</p>
+        </div>
+    </div>
     <table>
         <thead>
             <tr>
