@@ -48,19 +48,19 @@ NIDS_Project/
 **1. Install dependencies:**
 ```bash
 pip install scapy mysql-connector-python flask python-dotenv
-
+```
 2. Run the sniffer (captures traffic and stores alerts in MySQL):
-
+```bash
 python backend_python/sniffer.py
-
+```
 3. Run the dashboard:
-
+```bash
 python web_dashboard/app.py
-
-4. Open your browser and go to:
-
+```
+4. Open your browser and go to:  
+```
 http://127.0.0.1:5000
-
+```
 
 ## 📌 Next Steps (Future Improvements)
 1. Build C/C++ packet capture module
