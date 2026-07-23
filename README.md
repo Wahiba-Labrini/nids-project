@@ -22,7 +22,7 @@ A personal project to detect suspicious network activity (port scanning, ARP spo
 ## 📸 Preview
 
 
-![NIDS Dashboard](screenshotS/dashboard.png)
+![NIDS Dashboard](screenshots/Dashboard.png)
 
 
 ## 📂 Project Structure
