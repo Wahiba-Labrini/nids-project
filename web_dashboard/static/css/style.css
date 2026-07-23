@@ -44,6 +44,7 @@ table{
 }
 th,td{
     padding: 12px,15px;
+    text-align: center;
 }
 tbody tr:nth-child(even){
     background-color: rgba(50,40,90,0.4);
