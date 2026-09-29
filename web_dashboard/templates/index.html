@@ -3,56 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIDS Dashboard </title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    <title>NIDS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" type="image/svg+xml" href="{{url_for('static',filename='favicon.svg')}}">
 </head>
 <body>
-    <script src="{{url_for('static',filename='js/jquery-4.0.0.min.js')}}"></script>
-    <h1> Network Intrusion Detection System </h1>
-    <h2> Security Alerts </h2>
-    <div class="stats-container">
-        <div class="stat-card">
-            <h3>TOTAL ALERTS</h3>
-            <p class="stat-value">{{ stats.total_alerts }}</p>
+
+    <header class="topbar">
+        <div class="topbar-title">
+            <span class="shield">&#128737;</span>
+            <div>
+                <h1>Network Intrusion Detection System</h1>
+                <p class="subtitle">Live traffic monitoring &mdash; 3 detection algorithms active</p>
+            </div>
         </div>
-        <div class="stat-card">
-            <h3>MOST COMMON ATTACK</h3>
-            <p class="stat-value">{{ stats.most_common_attack }}</p>
+        <div class="status-pill">
+            <span class="status-dot"></span>
+            Monitoring
         </div>
-        <div class="stat-card">
-           <h3>MOST ACTIVE DAY</h3>
-            <p class="stat-value">{{ stats.most_active_day }}</p>
-        </div>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th> ID </th>
-                <th> IP Source </th>
-                <th> IP Destination </th>
-                <th> Attack Type </th>
-                <th> Risk Level </th>
-                <th> Timestamp </th>     
-            </tr>
-        </thead>
-        <tbody>
-            {% for alert in alerts %}
-            <tr>
-                <td> {{ alert.id }} </td>
-                <td> {{ alert.source_ip }} </td>
-                <td> {{ alert.destination_ip }} </td>
-                <td> {{ alert.attack_type }} </td>
-                <td class="{% if alert.risk_level== 'HIGH'%}risk-high
-                           {%elif alert.risk_level== 'CRITICAL'%}risk-critical
-                           {% else %} risk-normal 
-                           {% endif %}">
-                        {{ alert.risk_level }} 
-                </td>
-                <td> {{ alert.detected_at }} </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
+    </header>
+
+    <main>
+        <section class="stats-container">
+            <div class="stat-card stat-card--default">
+                <h3>Total Alerts</h3>
+                <p class="stat-value">{{ stats.total_alerts }}</p>
+            </div>
+            <div class="stat-card stat-card--attack">
+                <h3>Most Common Attack</h3>
+                <p class="stat-value">{{ stats.most_common_attack }}</p>
+            </div>
+            <div class="stat-card stat-card--day">
+                <h3>Most Active Day</h3>
+                <p class="stat-value">{{ stats.most_active_day }}</p>
+            </div>
+        </section>
+
+        <section class="table-section">
+            <div class="table-header">
+                <h2>Security Alerts</h2>
+            </div>
+            <div class="table-controls">
+                <input type="text" class="search-input" placeholder="Search by IP or attack type ...">
+                <select class="filter-select">
+                    <option value="">ALL Risk Levels</option>
+                    <option value="CRITICAL">Critical</option>
+                    <option value="HIGH">High</option>
+                    <option value="NORMAL">Normal</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>IP Source</th>
+                            <th>IP Destination</th>
+                            <th>Attack Type</th>
+                            <th>Risk Level</th>
+                            <th>Timestamp<span class="sort-arrow">%</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alert in alerts %}
+                        <tr>
+                            <td class="mono muted">{{ alert.id }}</td>
+                            <td class="mono">{{ alert.source_ip }}</td>
+                            <td class="mono">{{ alert.destination_ip }}</td>
+                            <td>{{ alert.attack_type }}</td>
+                            <td>
+                                <span class="badge {% if alert.risk_level == 'HIGH' %}risk-high
+                                           {% elif alert.risk_level == 'CRITICAL' %}risk-critical
+                                           {% else %}risk-normal
+                                           {% endif %}">
+                                    {{ alert.risk_level }}
+                                </span>
+                            </td>
+                            <td class="mono muted">{{ alert.detected_at }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <span class="empty-state">o</span>
+                                No alerts detected yet. The system is watching.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/jquery-4.0.0.min.js') }}"></script>
 </body>
 </html>
