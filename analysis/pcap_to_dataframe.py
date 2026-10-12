@@ -1,4 +1,4 @@
-from scapy.all import TCP,IP
+from scapy.all import TCP,IP,time
 
 def  transfrom_to_dataframe(pcap):
     dataframe=[]
@@ -6,7 +6,8 @@ def  transfrom_to_dataframe(pcap):
         if packet.haslayer(TCP) and packet.haslayer(IP):
             data={"src_ip":packet[IP].src,
             "dst_ip":packet[IP].dst,
-            "port":packet[TCP].dport
+            "port":packet[TCP].dport,
+            "timestamp":float(packet.time)
             }
             dataframe.append(data)
     return dataframe
