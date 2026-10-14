@@ -2,19 +2,32 @@ from pcap_to_dataframe import transfrom_to_dataframe
 from scapy.all import rdpcap
 import pandas as pd
 
+def analyzer(df):
+    results={}
+    results["src_counts"] = df['src_ip'].value_counts()
+
+    results["dst_counts"] = df['dst_ip'].value_counts()
+
+    results["port_counts"]  = df['port'].value_counts()
+
+    results["grouped"] = df.groupby(['src_ip','dst_ip']).size()
+
+    df['timestamp']=pd.to_datetime(df['timestamp'],unit='s')
+
+    df = df.set_index('timestamp')
+    results["seconde"] = df.resample('5s').size()
+    results["packet_per_seconde"] = results["seconde"] / 5
+    return results
+
+
 packet=rdpcap("port_scan_attack.pcapng")
 result=transfrom_to_dataframe(packet)
 df=pd.DataFrame(result)
-print(df['src_ip'].value_counts())
-print("*"*50)
-print(df['dst_ip'].value_counts())
-print("*"*50)
-print(df['port'].value_counts())
-print("*"*50)
-grouped=df.groupby(['src_ip','dst_ip']).size()
-print(grouped)
-df['timestamp']=pd.to_datetime(df['timestamp'],unit='s')
-print("-"*50)
-df = df.set_index('timestamp')
-seconde=df.resample('5s').size()
-print(seconde)
+res=analyzer(df)
+
+print(res["packet_per_seconde"])
+"""
+print("--GROUPED-BY-IP-PAIR--")
+print(res["grouped"])
+...
+"""
