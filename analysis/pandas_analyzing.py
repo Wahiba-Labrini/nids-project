@@ -17,6 +17,7 @@ def analyzer(df):
     df = df.set_index('timestamp')
     results["seconde"] = df.resample('5s').size()
     results["packet_per_seconde"] = results["seconde"] / 5
+    results["unique_port_window"] = df.resample('5s')["port"].nunique()
     return results
 
 
@@ -24,8 +25,9 @@ packet=rdpcap("port_scan_attack.pcapng")
 result=transfrom_to_dataframe(packet)
 df=pd.DataFrame(result)
 res=analyzer(df)
-
+print(res)
 print(res["packet_per_seconde"])
+print(res["unique_port_window"])
 """
 print("--GROUPED-BY-IP-PAIR--")
 print(res["grouped"])
