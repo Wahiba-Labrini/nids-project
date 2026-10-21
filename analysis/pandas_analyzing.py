@@ -1,4 +1,4 @@
-from pcap_to_dataframe import transfrom_to_dataframe
+from analysis.pcap_to_dataframe import transfrom_to_dataframe
 from scapy.all import rdpcap
 import pandas as pd
 
