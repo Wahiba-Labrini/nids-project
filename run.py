@@ -7,6 +7,7 @@ from scapy.all import rdpcap
 import numpy as np
 from analysis.detection import zscore, is_anomaly
 
+
 def load_windows(path):
     packet=rdpcap(path)
     result=transfrom_to_dataframe(packet)
@@ -15,31 +16,49 @@ def load_windows(path):
     return res
 
 
+def get_baseline(res):
+    mean_val=round(np.mean(res["packet_per_seconde"]),2)
+    std_val=round(np.std(res["packet_per_seconde"]),2)
+    return mean_val,std_val
 
-res=load_windows("normal_traffic.pcapng")
-for  time,packet_sec in res["packet_per_seconde"].items():
-    pps_list=[]
-    ports=res["unique_port_window"][time]
-    pps_list.append(packet_sec)
-    print("TIME: ",time ,"| PACKET/SEC: ",packet_sec,"| PORTS: ",ports)
 
-    #row=TrafficWindow(window_start=time,packets_per_seconde=float(packet_sec),unique_ports=int(ports))
+def detect(res,mean_val,std_val):
+    anomalies=[]
+    for time,packet_sec in res["packet_per_seconde"].items():
+            if is_anomaly(packet_sec,mean_val,std_val):
+                anomalies.append(time)
+    print("DETECTED")
+    return anomalies
+    
+    
 
-mean_val=round(np.mean(pps_list),2)
-std_val=round(np.std(pps_list),2)
-#print(mean_val,std_val)
-#z=(401.2-mean_val)/std_val
-#print(round(z,2))
-#print(round(zscore(401.2,mean_val,std_val),2))
-#   print(is_anomaly(mean_val,mean_val,std_val))
-    #session.add(row)
 
-#session.commit()
+def save_windows(res,label):
+    for  time,packet_sec in res["packet_per_seconde"].items():
+        ports=res["unique_port_window"][time]
+        src=res["src_ip_window"][time]
+        if pd.isna(src):
+            src=None
+
+        dst=res["dst_ip_window"][time]
+        if pd.isna(dst):
+                dst=None
+
+        row = TrafficWindow(src_ip=src,dst_ip=dst,window_start=time,packets_per_seconde=float(packet_sec),unique_ports=int(ports),label=label)
+
+        session.add(row)
+    session.commit()
+    print("SAVED")
+
+
+
+res_normal=load_windows("normal_traffic.pcapng")
+mean_val,std_val=get_baseline(res_normal)
 
 res_attack=load_windows("port_scan_attack.pcapng")
-for time,value in res_attack["packet_per_seconde"].items():
-    result=is_anomaly(value,mean_val,std_val)
-    print("TIME:",time, "VALUE :",value, "RESULT:",result)
+print(detect(res_attack,mean_val,std_val))
 
-
-    
+save_windows(res_normal,"normal")
+save_windows(res_attack,"attack")
+#print(res_attack["src_ip_window"] )
+#print("SRC: ",src, "DST : ", dst,"TIME: ",time ,"| PACKET/SEC: ",packet_sec,"| PORTS: ",ports)
