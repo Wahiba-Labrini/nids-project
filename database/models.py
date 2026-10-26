@@ -12,6 +12,7 @@ class TrafficWindow(base):
     window_start=Column(DateTime)
     packets_per_seconde=Column(Float)
     unique_ports=Column(Integer)
+    label=Column(String(10))
 
 
 base.metadata.create_all(bind=engine)
