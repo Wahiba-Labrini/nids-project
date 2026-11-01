@@ -24,12 +24,16 @@ def analyzer(df):
     df['timestamp']=pd.to_datetime(df['timestamp'],unit='s')
 
     df = df.set_index('timestamp')
+  
 
     results["seconde"] = df.resample('5s').size()
     results["packet_per_seconde"] = results["seconde"] / 5
     results["unique_port_window"] = df.resample('5s')["port"].nunique()
     results["src_ip_window"] = df.resample('5s')["src_ip"].agg(most_common)
     results["dst_ip_window"] = df.resample('5s')['dst_ip'].agg(most_common)
+
+    df_syn=df[df['SYN']==True]
+    results["syn_per_target"]=df_syn.groupby([pd.Grouper(freq='5s'),'src_ip','dst_ip','port']).size()
 
     return results
 

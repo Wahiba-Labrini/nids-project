@@ -13,6 +13,7 @@ def load_windows(path):
     result=transfrom_to_dataframe(packet)
     df=pd.DataFrame(result)
     res=analyzer(df)
+    print(f"--[packet SYN]:{df["SYN"].sum()}--")
     return res
 
 
@@ -70,20 +71,24 @@ def detect_ports(res,limit):
     return ports
 
 
-     
+print("-----------------------------")   
 res_normal=load_windows("normal_traffic.pcapng")
+#print(res_normal)
 mean_val,std_val=get_baseline(res_normal)
-
+print("-----------------------------")  
 res_attack=load_windows("port_scan_attack.pcapng")
+#print(res_attack)
 print(detect(res_attack,mean_val,std_val))
 
-save_windows(res_normal,"normal")
-save_windows(res_attack,"attack")
+#save_windows(res_normal,"normal")
+#save_windows(res_attack,"attack")
 
 print("----------------------------------------")
 print(detect_ports(res_normal,30))
 print(detect_ports(res_attack,30))
 
-
+print("*" *60)
+print(res_normal["syn_per_target"].max())
+print(res_attack["syn_per_target"].max())
 #print(res_normal["unique_port_window"])
 
