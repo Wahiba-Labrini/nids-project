@@ -5,7 +5,10 @@ from analysis.pandas_analyzing import analyzer
 from analysis.pcap_to_dataframe import transfrom_to_dataframe
 from scapy.all import rdpcap
 import numpy as np
-from analysis.detection import  zscore,is_anomaly,is_port_scan
+from analysis.algorithms.anomaly_detection import  detect_anomalies
+from analysis.algorithms.port_scan import detect_ports
+from analysis.algorithms.brute_force import detect_brute_force
+
 
 
 def load_windows(path):
@@ -22,6 +25,7 @@ def get_baseline(res):
     std_val=round(np.std(res["packet_per_seconde"]),2)
     return mean_val,std_val
 
+
 def get_baseline_db(session):
     rows=session.query(TrafficWindow).filter_by(label='normal').all()
     res=[]
@@ -30,19 +34,7 @@ def get_baseline_db(session):
     mean_val=round(np.mean(res),2)
     std_val=round(np.std(res),2)
     return mean_val,std_val
-    
 
-    
-     
-
-def detect(res,mean_val,std_val):
-    anomalies=[]
-    for time,packet_sec in res["packet_per_seconde"].items():
-            if is_anomaly(packet_sec,mean_val,std_val):
-                anomalies.append(time)
-    return anomalies
-    
-    
 
 
 def save_windows(res,label):
@@ -63,32 +55,15 @@ def save_windows(res,label):
     session.commit()
 
     
-def detect_ports(res,limit):
-    ports=[]
-    for time,port in res["unique_port_window"].items():
-        if is_port_scan(port,limit):
-            ports.append(time)
-    return ports
-
-
-print("-----------------------------")   
 res_normal=load_windows("normal_traffic.pcapng")
-#print(res_normal)
-mean_val,std_val=get_baseline(res_normal)
-print("-----------------------------")  
+mean_val,std_val=get_baseline(res_normal)  
 res_attack=load_windows("port_scan_attack.pcapng")
-#print(res_attack)
-print(detect(res_attack,mean_val,std_val))
-
+anomalie=(detect_anomalies(res_attack,mean_val,std_val))
 #save_windows(res_normal,"normal")
 #save_windows(res_attack,"attack")
 
-print("----------------------------------------")
-print(detect_ports(res_normal,30))
-print(detect_ports(res_attack,30))
+port_normal=res_normal["syn_per_target"].idxmax()
+port_attack=res_attack["syn_per_target"].idxmax()
 
-print("*" *60)
-print(res_normal["syn_per_target"].max())
-print(res_attack["syn_per_target"].max())
 #print(res_normal["unique_port_window"])
 
