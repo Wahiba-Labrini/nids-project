@@ -1,4 +1,5 @@
-from analysis.detection import zscore,is_anomaly
+from analysis.algorithms.anomaly_detection import zscore,is_anomaly,detect_anomalies
+from run import load_windows
 
 def test_zscore():
     """IS THE CALCULE IS RIGHT ? """
@@ -34,3 +35,6 @@ def test_is_anomaly_zero():
     """ CHECK VALUE = 0 """
     res=is_anomaly(0,10,2)
     assert res == False
+
+# Testing  detect_anomalies()
+
