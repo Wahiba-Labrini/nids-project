@@ -54,16 +54,16 @@ def save_windows(res,label):
         query_nor =session.query(TrafficWindow).filter_by(label='normal').all()
     session.commit()
 
-    
-res_normal=load_windows("normal_traffic.pcapng")
-mean_val,std_val=get_baseline(res_normal)  
-res_attack=load_windows("port_scan_attack.pcapng")
-anomalie=(detect_anomalies(res_attack,mean_val,std_val))
-#save_windows(res_normal,"normal")
-#save_windows(res_attack,"attack")
+if __name__ == "__main__" :
+    res_normal=load_windows("normal_traffic.pcapng")
+    mean_val,std_val=get_baseline(res_normal)  
+    res_attack=load_windows("port_scan_attack.pcapng")
+    anomalie=(detect_anomalies(res_attack,mean_val,std_val))
+    #save_windows(res_normal,"normal")
+    #save_windows(res_attack,"attack")
 
-port_normal=res_normal["syn_per_target"].idxmax()
-port_attack=res_attack["syn_per_target"].idxmax()
+    port_normal=res_normal["syn_per_target"].idxmax()
+    port_attack=res_attack["syn_per_target"].idxmax()
 
-#print(res_normal["unique_port_window"])
+    #print(res_normal["unique_port_window"])
 
