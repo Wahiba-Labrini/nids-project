@@ -1,5 +1,5 @@
 from analysis.algorithms.anomaly_detection import zscore,is_anomaly,detect_anomalies
-from run import load_windows
+from run import load_windows,get_baseline
 
 def test_zscore():
     """IS THE CALCULE IS RIGHT ? """
@@ -38,3 +38,9 @@ def test_is_anomaly_zero():
 
 # Testing  detect_anomalies()
 
+res_normal=load_windows("normal_traffic.pcapng")
+mean_val,std_val=get_baseline(res_normal)
+res_attack=load_windows("port_scan_attack.pcapng")
+
+def test_detect_anomalies():
+    assert detect_anomalies(res_attack,mean_val,std_val)
