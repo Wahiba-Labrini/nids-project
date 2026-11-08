@@ -8,8 +8,8 @@ def detect_arp_spoofing(packet):
         src_ip=packet[ARP].psrc 
         src_mac=packet[ARP].hwsrc
         if src_ip  in ip_mac_tracker:
-            if ip_mac_tracker[src_ip]==src_mac :
+            if ip_mac_tracker[src_ip]!=src_mac :
                 insert_alert(src_ip,src_mac,"ARP_SPOOFING","CRITICAL")   
                 print(f"⚠️ ALERTE: ARP SPOOFING DETECTE POUR {src_ip}")
             else:
-                ip_mac_tracker[src_ip]!=src_mac 
+                ip_mac_tracker[src_ip]=src_mac 

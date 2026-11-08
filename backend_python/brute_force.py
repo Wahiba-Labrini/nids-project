@@ -1,4 +1,4 @@
-from scapy.all import IP,TCP,ARP
+from scapy.all import IP,TCP
 from db_handler import insert_alert
 
 brute_force_tracker={}
